@@ -304,12 +304,14 @@ export const run = async (config: Config, _logger: Logger, dockerEnv?: DockerCom
     if (dockerEnv !== undefined) {
       env = await dockerEnv.up();
 
-      // In standalone mode, remap ports to the dynamically assigned container ports
+      // Remap proof server port if Docker environment is provided (e.g. preprod-ps, preview-ps)
+      config.proofServer = mapContainerPort(env, config.proofServer, 'proof-server');
+
+      // In standalone mode, remap other ports to the dynamically assigned container ports
       if (config instanceof StandaloneConfig) {
-        config.indexer = mapContainerPort(env, config.indexer, 'reputation-indexer');
-        config.indexerWS = mapContainerPort(env, config.indexerWS, 'reputation-indexer');
-        config.node = mapContainerPort(env, config.node, 'reputation-node');
-        config.proofServer = mapContainerPort(env, config.proofServer, 'reputation-proof-server');
+        config.indexer = mapContainerPort(env, config.indexer, 'indexer');
+        config.indexerWS = mapContainerPort(env, config.indexerWS, 'indexer');
+        config.node = mapContainerPort(env, config.node, 'node');
       }
     }
 
