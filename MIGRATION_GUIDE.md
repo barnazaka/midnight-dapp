@@ -34,7 +34,7 @@ source $HOME/.local/bin/env
 compact update 0.28.0
 ```
 
-> **Note**: If you already have the devtools installed, `compact self update` will update to the latest version. If you encounter issues with a corrupted `.compact` directory, `compact clean` will reset it.
+> **Note**: If you already have the devtools installed, `compact self update` will update to the latest version. If you enreputation issues with a corrupted `.compact` directory, `compact clean` will reset it.
 
 ### Verify
 
@@ -71,7 +71,7 @@ Update the `pragma` in your `.compact` file(s):
 ### Compile
 
 ```bash
-compact compile src/counter.compact src/managed/counter
+compact compile src/reputation.compact src/managed/reputation
 ```
 
 Expected output:
@@ -82,7 +82,7 @@ Compiling 1 circuits:
 
 ### Compiled Artifacts
 
-After a successful compile, `src/managed/counter/` will contain:
+After a successful compile, `src/managed/reputation/` will contain:
 
 ```
 contract/   — index.js, index.d.ts (TypeScript bindings)
@@ -131,15 +131,15 @@ midnight-js 3.0.0 uses `CompiledContract` from `@midnight-ntwrk/compact-js` inst
 
 ```typescript
 import { CompiledContract } from '@midnight-ntwrk/compact-js';
-import { Counter } from '@midnight-ntwrk/counter-contract';
+import { Reputation } from '@midnight-ntwrk/reputation-contract';
 
-const counterCompiledContract = CompiledContract.make('counter', Counter.Contract).pipe(
+const reputationCompiledContract = CompiledContract.make('reputation', Reputation.Contract).pipe(
   CompiledContract.withVacantWitnesses,
   CompiledContract.withCompiledFileAssets(contractConfig.zkConfigPath),
 );
 ```
 
-This `counterCompiledContract` is then passed to `deployContract` and `findDeployedContract` via the `compiledContract` field.
+This `reputationCompiledContract` is then passed to `deployContract` and `findDeployedContract` via the `compiledContract` field.
 
 ### Circuit Type Changes
 
@@ -148,7 +148,7 @@ Circuit IDs are now branded types (`ImpureCircuitId`) from `@midnight-ntwrk/comp
 ```typescript
 import type { ImpureCircuitId } from '@midnight-ntwrk/compact-js';
 
-export type CounterCircuits = ImpureCircuitId<Counter.Contract<CounterPrivateState>>;
+export type ReputationCircuits = ImpureCircuitId<Reputation.Contract<ReputationPrivateState>>;
 ```
 
 ### Contract Test Changes
@@ -160,11 +160,11 @@ import { Simulator } from '@midnight-ntwrk/compact-runtime';
 
 // Old:
 const sim = new Simulator(witnesses);
-const ledgerState = sim.ledger(Counter.initialState(new Uint8Array(32)));
+const ledgerState = sim.ledger(Reputation.initialState(new Uint8Array(32)));
 
 // New:
-const sim = Simulator.make(Counter.Contract, witnesses);
-const ledgerState = sim.state('counter').data;
+const sim = Simulator.make(Reputation.Contract, witnesses);
+const ledgerState = sim.state('reputation').data;
 ```
 
 ---
@@ -418,7 +418,7 @@ If you use the wrong token type for balance lookups, the wallet will appear to h
 `levelPrivateStateProvider` now **requires** either a `walletProvider` or `privateStoragePasswordProvider` for encrypting private state storage. Passing neither throws an error at runtime.
 
 ```diff
-  privateStateProvider: levelPrivateStateProvider<typeof CounterPrivateStateId>({
+  privateStateProvider: levelPrivateStateProvider<typeof ReputationPrivateStateId>({
     privateStateStoreName: contractConfig.privateStateStoreName,
 +   walletProvider: walletAndMidnightProvider,
   }),

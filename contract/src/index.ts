@@ -1,4 +1,4 @@
-// This file is part of midnightntwrk/example-counter.
+// This file is part of midnightntwrk/private-reputation-system.
 // Copyright (C) 2025 Midnight Foundation
 // SPDX-License-Identifier: Apache-2.0
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,5 +13,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * as Counter from "./managed/counter/contract/index.js";
-export * from "./witnesses";
+export * as Reputation from "./managed/reputation/contract/index.js";
+export * from "./witnesses.js";
