@@ -2,7 +2,7 @@
 
 ## Status: Complete
 
-The example-counter app has been successfully migrated to the Preprod network. Contracts can be deployed and interacted with on Preprod.
+The private-reputation-system app has been successfully migrated to the Preprod network. Contracts can be deployed and interacted with on Preprod.
 
 ## What Was Done
 
@@ -30,7 +30,7 @@ The example-counter app has been successfully migrated to the Preprod network. C
 ### Bug Workaround: wallet-sdk-unshielded-wallet signRecipe
 - **Bug**: `TransactionOps.addSignature()` in `@midnight-ntwrk/wallet-sdk-unshielded-wallet@1.0.0` hardcodes `'pre-proof'` type marker when cloning intents via `Intent.deserialize()`. After `proveTx()`, intents contain `Proof` data, not `PreProof`. The WASM deserializer fails with "Failed to clone intent".
 - **Impact**: All contract deployments and calls fail. DUST coins become locked as "pending" due to a separate known issue (pending coins not released on failure).
-- **Workaround**: Custom `signTransactionIntents()` in `counter-cli/src/api.ts` bypasses `signRecipe()` and signs intents manually with the correct proof marker (`'proof'` for base transaction, `'pre-proof'` for balancing transaction).
+- **Workaround**: Custom `signTransactionIntents()` in `reputation-cli/src/api.ts` bypasses `signRecipe()` and signs intents manually with the correct proof marker (`'proof'` for base transaction, `'pre-proof'` for balancing transaction).
 - **Upstream fix needed**: `TransactionOps.addSignature()` should read the proof marker from the intent (e.g. `originalIntent.proof.instance`) instead of hardcoding `'pre-proof'`.
 
 ## Key Files Changed
@@ -39,15 +39,15 @@ The example-counter app has been successfully migrated to the Preprod network. C
 |------|---------|
 | `package.json` | Updated all midnight-js and wallet SDK dependencies |
 | `contract/src/counter.compact` | Updated pragma to `>= 0.20` |
-| `counter-cli/src/api.ts` | Wallet SDK integration, signRecipe workaround, dust registration |
-| `counter-cli/src/cli.ts` | Interactive CLI menus, deploy/join/increment flow, error logging |
-| `counter-cli/src/config.ts` | PreprodConfig with endpoints |
-| `counter-cli/src/common-types.ts` | Updated type definitions for midnight-js 3.0.0 |
-| `counter-cli/src/preprod-local.ts` | Preprod entry point |
-| `counter-cli/proof-server-preprod.yml` | Docker compose for local proof server |
+| `reputation-cli/src/api.ts` | Wallet SDK integration, signRecipe workaround, dust registration |
+| `reputation-cli/src/cli.ts` | Interactive CLI menus, deploy/join/increment flow, error logging |
+| `reputation-cli/src/config.ts` | PreprodConfig with endpoints |
+| `reputation-cli/src/common-types.ts` | Updated type definitions for midnight-js 3.0.0 |
+| `reputation-cli/src/preprod-local.ts` | Preprod entry point |
+| `reputation-cli/proof-server-preprod.yml` | Docker compose for local proof server |
 
 ## Reference Materials
 
-- Previous Preview migration PR: https://github.com/midnightntwrk/example-counter/pull/1312
+- Previous Preview migration PR: https://github.com/midnightntwrk/private-reputation-system/pull/1312
 - Local copies of upstream libraries for reference: `midnight-js/`, `midnight-wallet/`
 - Migration details: [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)

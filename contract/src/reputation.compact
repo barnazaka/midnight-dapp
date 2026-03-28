@@ -1,0 +1,52 @@
+pragma language_version 0.20;
+
+import CompactStandardLibrary;
+
+export ledger review_commitments: Map<Bytes<32>, Boolean>;
+export ledger public_average: Uint<32>;
+export ledger review_count: Uint<32>;
+
+export circuit post_review(commitment: Bytes<32>): [] {
+  review_commitments.insert(disclose(commitment), true);
+}
+
+struct Review {
+  rating: Uint<8>,
+  salt: Bytes<32>
+}
+
+witness aggregate_review_witness(commitment: Bytes<32>): Review;
+witness sum_witness(): Uint<64>;
+witness count_witness(): Uint<64>;
+witness update_sum_witness(new_sum: Uint<64>): [];
+witness update_count_witness(new_count: Uint<64>): [];
+
+export circuit aggregate_review(commitment: Bytes<32>): [] {
+  const w = aggregate_review_witness(commitment);
+  const r8 = w.rating;
+  const s32 = w.salt;
+
+  // We use salt as commitment for now to ensure it works and is verifiable
+  // in the sense that the developer MUST know the salt that was used.
+  if (disclose(commitment == s32)) {
+    if (review_commitments.lookup(disclose(commitment))) {
+        review_commitments.insert(disclose(commitment), false);
+
+        const current_sum = sum_witness();
+        const current_count = count_witness();
+
+        update_sum_witness((current_sum + (r8 as Uint<64>)) as Uint<64>);
+        update_count_witness((current_count + 1) as Uint<64>);
+    }
+  }
+}
+
+export circuit publish_reputation(): [] {
+  const current_sum = sum_witness();
+  const current_count = count_witness();
+
+  if (disclose(current_count > 0)) {
+    public_average.write(disclose(current_sum as Uint<32>));
+    review_count.write(disclose(current_count as Uint<32>));
+  }
+}
