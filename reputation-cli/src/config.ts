@@ -8,11 +8,11 @@ export const contractConfig = {
 };
 
 export interface Config {
-  readonly logDir: string;
-  readonly indexer: string;
-  readonly indexerWS: string;
-  readonly node: string;
-  readonly proofServer: string;
+  logDir: string;
+  indexer: string;
+  indexerWS: string;
+  node: string;
+  proofServer: string;
 }
 
 export class StandaloneConfig implements Config {
