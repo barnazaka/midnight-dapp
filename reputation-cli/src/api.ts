@@ -51,7 +51,7 @@ globalThis.WebSocket = WebSocket;
 
 // Pre-compile the reputation contract with ZK circuit assets
 const reputationCompiledContract = CompiledContract.make('reputation', Reputation.Contract).pipe(
-  CompiledContract.withVacantWitnesses,
+  CompiledContract.withWitnesses(witnesses),
   CompiledContract.withCompiledFileAssets(contractConfig.zkConfigPath),
 );
 
