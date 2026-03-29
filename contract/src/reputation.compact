@@ -26,17 +26,15 @@ export circuit aggregate_review(commitment: Bytes<32>): [] {
   const r8 = w.rating;
   const s32 = w.salt;
 
-  // We use salt as commitment for now to ensure it works and is verifiable
-  // in the sense that the developer MUST know the salt that was used.
   if (disclose(commitment == s32)) {
     if (review_commitments.lookup(disclose(commitment))) {
-        review_commitments.insert(disclose(commitment), false);
+      review_commitments.insert(disclose(commitment), false);
 
-        const current_sum = sum_witness();
-        const current_count = count_witness();
+      const current_sum = sum_witness();
+      const current_count = count_witness();
 
-        update_sum_witness((current_sum + (r8 as Uint<64>)) as Uint<64>);
-        update_count_witness((current_count + 1) as Uint<64>);
+      update_sum_witness((current_sum + (r8 as Uint<64>)) as Uint<64>);
+      update_count_witness((current_count + 1) as Uint<64>);
     }
   }
 }
