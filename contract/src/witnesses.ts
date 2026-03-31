@@ -12,11 +12,10 @@ export const witnesses: any = {
   aggregate_review_witness: (context: any, commitment: Uint8Array) => {
     const ps = context.privateState;
     const commitmentHex = Buffer.from(commitment).toString('hex');
-    console.log(`Witness (aggregate_review_witness) called for commitment: ${commitmentHex}`);
+    console.log(`[Witness] aggregate_review_witness for: ${commitmentHex}`);
 
     const review = ps.pendingReviews.find((r: any) => r.commitment === commitmentHex);
     if (!review) {
-        console.error(`Review not found for commitment: ${commitmentHex}`);
         throw new Error("Review not found for commitment: " + commitmentHex);
     }
 
@@ -25,22 +24,18 @@ export const witnesses: any = {
       salt: Uint8Array.from(Buffer.from(review.salt, 'hex')),
     };
 
-    console.log(`Witness (aggregate_review_witness) returning rating: ${result.rating}`);
-    return [
-      context.privateState,
-      result
-    ];
+    return [context.privateState, result];
   },
   sum_witness: (context: any) => {
-    console.log(`Witness (sum_witness) returning: ${context.privateState.totalRatingSum}`);
+    console.log(`[Witness] sum_witness: ${context.privateState.totalRatingSum}`);
     return [context.privateState, context.privateState.totalRatingSum];
   },
   count_witness: (context: any) => {
-    console.log(`Witness (count_witness) returning: ${context.privateState.ratingCount}`);
+    console.log(`[Witness] count_witness: ${context.privateState.ratingCount}`);
     return [context.privateState, context.privateState.ratingCount];
   },
   update_sum_witness: (context: any, new_sum: bigint) => {
-    console.log(`Witness (update_sum_witness) updating sum to: ${new_sum}`);
+    console.log(`[Witness] update_sum_witness: ${new_sum}`);
     return [
       {
         ...context.privateState,
@@ -50,7 +45,7 @@ export const witnesses: any = {
     ];
   },
   update_count_witness: (context: any, new_count: bigint) => {
-    console.log(`Witness (update_count_witness) updating count to: ${new_count}`);
+    console.log(`[Witness] update_count_witness: ${new_count}`);
     return [
       {
         ...context.privateState,

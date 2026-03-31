@@ -66,4 +66,11 @@ export class ReputationSimulator {
     ).context;
     return ledger(this.circuitContext.currentQueryContext.state);
   }
+
+  public initialize(): Ledger {
+    this.circuitContext = this.contract.impureCircuits.initialize(
+      this.circuitContext
+    ).context;
+    return ledger(this.circuitContext.currentQueryContext.state);
+  }
 }

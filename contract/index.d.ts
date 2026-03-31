@@ -4,30 +4,19 @@ export type Witnesses<PS> = {
 }
 
 export type ImpureCircuits<PS> = {
-  test(context: __compactRuntime.CircuitContext<PS>,
-       c_0: Uint8Array,
-       r_0: bigint,
-       s_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
 }
 
 export type PureCircuits = {
+  test(r_0: bigint, s_0: Uint8Array): Uint8Array;
 }
 
 export type Circuits<PS> = {
   test(context: __compactRuntime.CircuitContext<PS>,
-       c_0: Uint8Array,
        r_0: bigint,
-       s_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+       s_0: Uint8Array): __compactRuntime.CircuitResults<PS, Uint8Array>;
 }
 
 export type Ledger = {
-  cmt: {
-    isEmpty(): boolean;
-    size(): bigint;
-    member(key_0: Uint8Array): boolean;
-    lookup(key_0: Uint8Array): boolean;
-    [Symbol.iterator](): Iterator<[Uint8Array, boolean]>
-  };
 }
 
 export type ContractReferenceLocations = any;

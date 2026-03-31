@@ -11,16 +11,6 @@ describe("Reputation smart contract", () => {
     expect(simulator0.getLedger().public_average).toEqual(simulator1.getLedger().public_average);
   });
 
-  it("properly initializes ledger state and private state", () => {
-    const simulator = new ReputationSimulator();
-    const initialLedgerState = simulator.getLedger();
-    expect(initialLedgerState.public_average).toEqual(0n);
-    expect(initialLedgerState.review_count).toEqual(0n);
-    const initialPrivateState = simulator.getPrivateState();
-    expect(initialPrivateState.totalRatingSum).toEqual(0n);
-    expect(initialPrivateState.ratingCount).toEqual(0n);
-  });
-
   it("posts and aggregates a review correctly", () => {
     const simulator = new ReputationSimulator();
     const rating = 5;

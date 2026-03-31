@@ -26,8 +26,6 @@ export circuit aggregate_review(commitment: Bytes<32>): [] {
   const r8 = w.rating;
   const s32 = w.salt;
 
-  // We use salt as commitment for now to ensure it works and is verifiable
-  // in the sense that the developer MUST know the salt that was used.
   if (disclose(commitment == s32)) {
     if (review_commitments.lookup(disclose(commitment))) {
         review_commitments.insert(disclose(commitment), false);
@@ -49,4 +47,9 @@ export circuit publish_reputation(): [] {
     public_average.write(disclose(current_sum as Uint<32>));
     review_count.write(disclose(current_count as Uint<32>));
   }
+}
+
+export circuit initialize(): [] {
+    public_average.write(0);
+    review_count.write(0);
 }

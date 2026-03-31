@@ -4,5 +4,5 @@
   "sourceRoot": "../",
   "sources": ["test.compact", "compiler/standard-library.compact"],
   "names": [],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAAA;;;;;;;;;;MAAyG,AAAA,IAAyL;;;;;cAArK,GAAY;cAAE,GAAU;cAAE,GAAY;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;yCAAtC,GAAY,+BAAE,GAAU,+BAAE,GAAY;;;;;;;iEAAtC,GAAY,EAAE,GAAU,EAAE,GAAY;;;OAA+H;;;GACjS;EADD;;;;;;;;;;;;;;;;;;;;;;;;;;IAA6D;;;;;;;;;;yEAA2C;;;;;;;GACvG;EC+CD,AAAA,kBAAiC;oEAAA;;;EDhDwE,AAAA,OAAyL,4BAArK,GAAY,EAAE,GAAU,EAAE,GAAY;UAAc,OAAiD,2CAAT,GAAC;0EAAK,GAAC;;;sBAAiB,GAAC,EAAI,OAAK;MAAK;;;;;;;;;;6HAAoB,GAAC;;;;;;0EAAlB;;;GAA+B;;;;;;;;;;;;;;;;;;;;IAArO;;;;;uCAAA;;;;;;;;;;;;;;;;4GAA2C;;;;;;uCAA3C;;;;;;;;;;;;4GAA2C;;;;;;;;;;;;;;uCAA3C;;;;;;;;;;;;;;;4GAA2C;;;;;;;;;;;;;;uCAA3C;;;;;;;;;;;;;;;;;4GAA2C;;;;;;;;;KAAA;;;;;;;;;;"
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAAA;;;;;;;;;;MAA6D,AAAA,IAA8H;;OAAA;;;GAC1L;EADD;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;GACC;EC+CD,AAAA,kBAAiC;oEAAA;;;EDhD4B,AAAA,OAA8H,CAA1G,GAAU,EAAE,GAAY;;wEAA4D,GAAC;;mCAAe,GAAC;GAAK;;;;;;;;;;;;;;;;;;;;;;;EAA9H,AAAA,IAA8H;;;;UAA1G,GAAU;UAAE,GAAY;;;;;;;;;;;;;;;kCAAxB,GAAU,EAAE,GAAY;GAAkF;;;;"
 }

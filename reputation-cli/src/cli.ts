@@ -1,11 +1,11 @@
-import { type WalletContext } from './api';
+import { type WalletContext } from './api.js';
 import { stdin as input, stdout as output } from 'node:process';
 import { createInterface, type Interface } from 'node:readline/promises';
 import { type Logger } from 'pino';
 import { type StartedDockerComposeEnvironment, type DockerComposeEnvironment } from 'testcontainers';
-import { type ReputationProviders, type DeployedReputationContract } from './common-types';
-import { type Config, StandaloneConfig } from './config';
-import * as api from './api';
+import { type ReputationProviders, type DeployedReputationContract } from './common-types.js';
+import { type Config, StandaloneConfig } from './config.js';
+import * as api from './api.js';
 import { toHex } from '@midnight-ntwrk/midnight-js-utils';
 import { Buffer } from 'buffer';
 
@@ -147,14 +147,17 @@ const deployOrJoin = async (
     switch (choice.trim()) {
       case '1':
         try {
-          const contract = await api.withStatus('Deploying reputation contract', () =>
-            api.deploy(providers, {
+          const contract = await api.withStatus('Deploying reputation contract', async () => {
+            const deployed = await api.deploy(providers, {
                 totalRatingSum: 0n,
                 ratingCount: 0n,
                 pendingReviews: []
-            }),
-          );
-          console.log(`  Contract deployed at: ${contract.deployTxData.public.contractAddress}\n`);
+            });
+            // Call initialize circuit to set up ledger state
+            await deployed.callTx.initialize();
+            return deployed;
+          });
+          console.log(`  Contract deployed and initialized at: ${contract.deployTxData.public.contractAddress}\n`);
           return contract;
         } catch (e) {
           const msg = e instanceof Error ? e.message : String(e);
@@ -217,13 +220,10 @@ const mainLoop = async (providers: ReputationProviders, walletCtx: api.WalletCon
           const ratingStr = await rli.question('Enter rating (0-255): ');
           const rating = parseInt(ratingStr);
           const salt = toHex(crypto.getRandomValues(new Uint8Array(32)));
-          // Simplified: commitment is just the salt for now as per contract simplified version
+          // Commitment is just the salt for now as per simplified contract check
           const commitment = salt;
 
           await api.withStatus('Submitting review', async () => {
-             // In a real app, the user would send (rating, salt) to the developer privately
-             // and the developer would store it in their private state.
-             // For this demo, we'll update the current private state.
              const ps = await providers.privateStateProvider.get('reputationPrivateState');
              if (ps) {
                  ps.pendingReviews.push({ rating, salt, commitment });
